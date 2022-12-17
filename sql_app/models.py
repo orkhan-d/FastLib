@@ -8,6 +8,16 @@ class Book(Base):
     book_id = Column("Book_id", Integer, primary_key = True)
 
     title = Column("Title", String(length=255), nullable = False)
+    author = Column("Author", String(length=255))
+
     description = Column("Description", Text, nullable=True)
 
-    author = Column("Author", String(length=255))
+    def __init__(
+        self, title: str, author: str, description: str = None
+    ):
+        self.title = title
+        self.description = description
+        self.author = author
+
+    def __repr__(self) -> str:
+        return f"\"{self.title}\", {self.author}"
