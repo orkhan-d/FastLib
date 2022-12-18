@@ -5,12 +5,12 @@ from .database import Base
 class Book(Base):
     __tablename__ = "Books"
 
-    book_id = Column("Book_id", Integer, primary_key = True)
+    book_id = Column("book_id", Integer, primary_key = True)
 
-    title = Column("Title", String(length=255), nullable = False)
-    author = Column("Author", String(length=255))
+    title = Column("title", String(length=255), nullable = False)
+    author = Column("author", String(length=255), nullable = False)
 
-    description = Column("Description", Text, nullable=True)
+    description = Column("description", Text, nullable=True)
 
     def __init__(
         self, title: str, author: str, description: str = None
@@ -21,3 +21,16 @@ class Book(Base):
 
     def __repr__(self) -> str:
         return f"\"{self.title}\", {self.author}"
+
+class tag(Base):
+    __tablename__ = "Tags"
+    tag_id = Column("tag_id", Integer, primary_key=True)
+    title = Column("title", String(length=255), nullable=False)
+
+    def __init__(
+        self, title: str
+    ):
+        self.title = title
+
+    def __repr__(self) -> str:
+        return f"Tag #{self.tag_id} \"{self.title}\""
