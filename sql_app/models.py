@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from .database import Base
 
 class Book(Base):
-    __tablename__ = "Books"
+    __tablename__ = "books"
 
     book_id = Column("book_id", Integer, primary_key = True)
 
@@ -23,7 +23,8 @@ class Book(Base):
         return f"\"{self.title}\", {self.author}"
 
 class tag(Base):
-    __tablename__ = "Tags"
+    __tablename__ = "tags"
+
     tag_id = Column("tag_id", Integer, primary_key=True)
     title = Column("title", String(length=255), nullable=False)
 
@@ -34,3 +35,18 @@ class tag(Base):
 
     def __repr__(self) -> str:
         return f"Tag #{self.tag_id} \"{self.title}\""
+
+class book_tag(Base):
+    __tablename__ = "book_tags"
+
+    book_id = Column("book_id", Integer)
+    tag_id = Column("tag_id", Integer)
+
+    def __init__(
+        self, book_id: int, tag_id: int
+    ):
+        self.book_id = book_id
+        self.tag_id = tag_id
+
+    def __repr__(self) -> str:
+        return f"Book #{self.book_id} has tag #{self.tag_id}"
