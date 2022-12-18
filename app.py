@@ -6,9 +6,9 @@ app = FastAPI()
 app.include_router(routers.books.router)
 app.include_router(routers.tags.router)
 
-import sql_app
+from sql_app.database import Base, engine
 
-sql_app.database.Base.metadata.create_all(bind=sql_app.database.engine)
+Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def root():

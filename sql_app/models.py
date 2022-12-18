@@ -2,10 +2,10 @@ from sqlalchemy import ForeignKey, Column, String, Integer, CHAR, Text
 from sqlalchemy.orm import relationship
 from .database import Base
 
-class Book(Base):
+class book(Base):
     __tablename__ = "books"
 
-    book_id = Column("book_id", Integer, primary_key = True)
+    book_id = Column("id", Integer, primary_key = True)
 
     title = Column("title", String(length=255), nullable = False)
     author = Column("author", String(length=255), nullable = False)
@@ -25,7 +25,7 @@ class Book(Base):
 class tag(Base):
     __tablename__ = "tags"
 
-    tag_id = Column("tag_id", Integer, primary_key=True)
+    tag_id = Column("id", Integer, primary_key=True)
     title = Column("title", String(length=255), nullable=False)
 
     def __init__(
@@ -39,8 +39,8 @@ class tag(Base):
 class book_tag(Base):
     __tablename__ = "book_tags"
 
-    book_id = Column("book_id", Integer)
-    tag_id = Column("tag_id", Integer)
+    book_id = Column("book_id", ForeignKey('books.id'), primary_key=True)
+    tag_id = Column("tag_id", ForeignKey('tags.id'), primary_key=True)
 
     def __init__(
         self, book_id: int, tag_id: int
