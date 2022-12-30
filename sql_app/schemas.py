@@ -8,7 +8,7 @@ class BookBase(BaseModel):
     tags: list[str] | None
 
 class BookCreate(BookBase):
-    pass
+    file: str
 
 class Book(BookBase):
     book_id: int

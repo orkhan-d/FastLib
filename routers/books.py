@@ -7,7 +7,7 @@ router = APIRouter()
 
 @router.post('/books/new', tags=['Books'])
 def add_book(
-    title: str, author: str, description: str = None, book_tags: list[str] = Query(None),
+    title: str, author: str, description: str = None,  book_tags: list[str] = Query(None),
     db: Session = Depends(database.get_db)):
     crud.create_book(
         db, schemas.BookCreate(
