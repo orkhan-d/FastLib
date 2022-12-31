@@ -9,15 +9,18 @@ class book(Base):
 
     title = Column("title", String(length=255), nullable = False)
     author = Column("author", String(length=255), nullable = False)
-
     description = Column("description", Text, nullable=True)
 
+    file = Column("file", String(length=255))
+
     def __init__(
-        self, title: str, author: str, description: str = None
+        self, title: str, author: str, file: str, description: str = None
     ):
         self.title = title
         self.description = description
         self.author = author
+
+        self.file = file
 
     def __repr__(self) -> str:
         return f"\"{self.title}\", {self.author}"

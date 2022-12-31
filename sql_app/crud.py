@@ -4,22 +4,36 @@ from sqlalchemy import and_
 from . import models, schemas
 from exceptions import BookAlreadyExists
 
-def create_book(db: Session, book: schemas.BookCreate):
+import shutil
+import books
+import os.path
+
+print(books.__file__)
+
+BOOKS_DIR = '/'+os.path.join(*books.__file__.split('/')[:-1])
+
+def create_book(db: Session, book: schemas.BookCreate, file):
     db_book = models.book(
         title=book.title,
         author=book.author,
-        description=book.description
+        description=book.description,
+        file=book.file
     )
 
     if not db.query(models.book).filter(
         and_(
             models.book.title==book.title,
-            models.book.author==book.author
+            models.book.author==book.author,
+            models.book.file==book.file
         )
     ).first():
         db.add(db_book)
         db.commit()
 
+        with open(os.path.join(BOOKS_DIR, book.file), 'wb') as buff:
+            shutil.copyfileobj(file, buff)
+
+        if not book.tags: return
         for tag in book.tags:
             db_tag = models.tag(tag)
 
