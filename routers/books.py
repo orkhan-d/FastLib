@@ -3,7 +3,7 @@ from fastapi import APIRouter, Query, Depends, File, UploadFile
 from sql_app.crud import Session
 from sql_app import crud, database, schemas
 
-from exceptions import BookAlreadyExists
+from exceptions import BookAlreadyExists, WrongBookType
 
 router = APIRouter()
 
@@ -12,6 +12,12 @@ def add_book(
     title: str, author: str, description: str = None, file: UploadFile = File(), book_tags: list[str] = Query(None),
     db: Session = Depends(database.get_db)):
     try:
+        if not any ([file.filename.endswith(book_type) \
+            for book_type in [
+                'fb2', 'doc', 'docx', 'txt', 'epub'
+            ]]):
+            raise WrongBookType
+
         crud.create_book(
             db, schemas.BookCreate(
                 title=title,
@@ -29,5 +35,9 @@ def add_book(
         }
     except BookAlreadyExists:
         return {
-            "Error": "Book already exists"
+            "Error": "Book already exists!"
+        }
+    except WrongBookType:
+        return {
+            "Error": "Wrong book type!"
         }
